@@ -12,40 +12,60 @@ datasource db {
 
 model Mahasiswa {
   id   Int    @id @default(autoincrement())
-  name String
+  name String @db.VarChar(255)
+  NIM  String @unique @db.VarChar(255)
 
   Mahasiswa_MataKuliah Mahasiswa_MataKuliah[]
 }
 
 model Dosen {
   id               Int                @id @default(autoincrement())
-  NIP              String
-  username         String
-  password         String
+  Role             Role               @default(DOSEN)
+  NIP              String             @unique @db.VarChar(255)
+  name             String             @db.VarChar(255)
+  username         String             @unique @db.VarChar(255)
+  password         String             @db.VarChar(255)
   Dosen_MataKuliah Dosen_MataKuliah[]
+}
+
+enum Role {
+  ADMIN
+  DOSEN
+}
+
+enum Hari {
+  SENIN
+  SELASA
+  RABU
+  KAMIS
+  JUMAT
+  SABTU
+  MINGGU
 }
 
 model MataKuliah {
   id                   Int                    @id @default(autoincrement())
-  name                 String
+  name                 String                 @unique
+  code                 String                 @unique @db.VarChar(255)
+  jadwal               Hari[]
   Mahasiswa_MataKuliah Mahasiswa_MataKuliah[]
   Dosen_MataKuliah     Dosen_MataKuliah[]
 }
 
 model Mahasiswa_MataKuliah {
   mahasiswaId  Int
-  Mahasiswa    Mahasiswa  @relation(fields: [mahasiswaId], references: [id])
+  Mahasiswa    Mahasiswa  @relation(fields: [mahasiswaId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   mataKuliahId Int
-  MataKuliah   MataKuliah @relation(fields: [mataKuliahId], references: [id])
+  MataKuliah   MataKuliah @relation(fields: [mataKuliahId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id(fields: [mahasiswaId, mataKuliahId])
 }
 
 model Dosen_MataKuliah {
   dosenId      Int
-  Dosen        Dosen      @relation(fields: [dosenId], references: [id])
+  Dosen        Dosen      @relation(fields: [dosenId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   mataKuliahId Int
-  MataKuliah   MataKuliah @relation(fields: [mataKuliahId], references: [id])
+  MataKuliah   MataKuliah @relation(fields: [mataKuliahId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id(fields: [dosenId, mataKuliahId])
 }
