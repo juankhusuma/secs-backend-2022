@@ -10,6 +10,7 @@ import removeRoutes from "./routes/remove.routes";
 import { config } from "dotenv";
 import { cristal, retro } from "gradient-string";
 import DosenValidator from "./validators/dosen.validators";
+import MahasiswaValidator from "./validators/mahasiswa.validators";
 
 config();
 
@@ -52,6 +53,22 @@ app
   );
 
 // Mahasiswa Routes Validations
+app
+  .get("/mahasiswa/:id", (req, res, next) =>
+    MahasiswaValidator.checkId(req, res, next)
+  )
+  .post("/mahasiswa", (req, res, next) =>
+    MahasiswaValidator.checkBody(req, res, next)
+  )
+  .put("/mahasiswa/:id", (req, res, next) =>
+    MahasiswaValidator.checkId(req, res, next)
+  )
+  .put("/mahasiswa/:id/", (req, res, next) =>
+    MahasiswaValidator.checkUpdatePayload(req, res, next)
+  )
+  .delete("/mahasiswa/:id", (req, res, next) =>
+    MahasiswaValidator.checkId(req, res, next)
+  );
 
 // Routes
 app

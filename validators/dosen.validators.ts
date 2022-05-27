@@ -1,4 +1,3 @@
-import { Prisma } from "@prisma/client";
 import { NextFunction, Request, Response } from "express";
 import prisma from "../lib/prisma";
 
@@ -15,14 +14,14 @@ export default class DosenValidator {
         throw new Error("Name is too short (3+ characters is required)");
       if (!NIP || NIP === "") throw new Error("NIP is required");
       let user = await prisma.dosen.findUnique({ where: { NIP } });
-      if (user) throw new Error("NIP already exists");
+      if (user) throw new Error("NIP already in use");
       if (!username || username === "") throw new Error("Username is required");
       if (username.length <= 3)
         throw new Error("Username is too short (3+ characters is required)");
       if (/[A-Z]/.test(username))
         throw new Error("Username must not contain uppercase letters");
       user = await prisma.dosen.findUnique({ where: { username } });
-      if (user) throw new Error("Username already exists");
+      if (user) throw new Error("Username already in use");
       if (!password || password === "") throw new Error("Password is required");
       if (Role && Role !== "DOSEN" && Role !== "ADMIN")
         throw new Error("Role could only be either DOSEN or ADMIN");
@@ -81,7 +80,7 @@ export default class DosenValidator {
         throw new Error("Name could not be set to an empty string");
       if (NIP) {
         let user = await prisma.dosen.findUnique({ where: { NIP } });
-        if (user) throw new Error("NIP already exists");
+        if (user) throw new Error("NIP already in use");
       } else if (NIP === "") {
         throw new Error("NIP could not be set to an empty string");
       }
@@ -91,7 +90,7 @@ export default class DosenValidator {
         if (username.match(/[A-Z]/))
           throw new Error("Username must not contain uppercase letters");
         let user = await prisma.dosen.findUnique({ where: { username } });
-        if (user) throw new Error("Username already exists");
+        if (user) throw new Error("Username already in use");
       } else if (username === "") {
         throw new Error("Username could not be set to an empty string");
       }
