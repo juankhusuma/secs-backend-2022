@@ -7,6 +7,7 @@ import mahasiswaRoutes from "./routes/mahasiswa.routes";
 import mataKuliahRoutes from "./routes/mataKuliah.routes";
 import assignmentRoutes from "./routes/assignment.routes";
 import removeRoutes from "./routes/remove.routes";
+import authRoutes from "./routes/auth.routes";
 import { config } from "dotenv";
 import { cristal, retro } from "gradient-string";
 import DosenValidator from "./validators/dosen.validators";
@@ -43,6 +44,9 @@ process.env.MODE === "dev" &&
 app
   .get("/dosen/:id", (req, res, next) => DosenValidator.checkId(req, res, next))
   .post("/dosen", (req, res, next) => DosenValidator.checkBody(req, res, next))
+  .post("/auth/register", (req, res, next) =>
+    DosenValidator.checkBody(req, res, next)
+  )
   .put("/dosen/:id/", (req, res, next) =>
     DosenValidator.checkId(req, res, next)
   )
@@ -101,6 +105,7 @@ app
   .use("/mahasiswa", mahasiswaRoutes)
   .use("/mata-kuliah", mataKuliahRoutes)
   .use("/mata-kuliah", assignmentRoutes)
-  .use("/mata-kuliah", removeRoutes);
+  .use("/mata-kuliah", removeRoutes)
+  .use("/auth", authRoutes);
 
 app.listen(port, () => console.log(retro(`Server listening on port:${port}`)));

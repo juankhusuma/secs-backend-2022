@@ -17,12 +17,12 @@ const routes = express
     )) as [Dosen | null, Error | null];
     return send(res, data, error);
   })
-  .post("/", async (req, res) => {
-    const [data, error] = (await handle(() =>
-      DosenServices.create(req.body)
-    )) as [Dosen | null, Error | null];
-    return send(res, data, error);
-  })
+  // .post("/", async (req, res) => {
+  //   const [data, error] = (await handle(() =>
+  //     DosenServices.create(req.body)
+  //   )) as [Dosen | null, Error | null];
+  //   return send(res, data, error);
+  // })
   .put("/:id", async (req, res) => {
     const [data, error] = (await handle(() =>
       DosenServices.update(parseInt(req.params.id), req.body)
