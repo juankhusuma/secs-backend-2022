@@ -23,7 +23,7 @@ export default class DosenServices {
           },
         },
       });
-      return data.map(({ Dosen_MataKuliah, ...Dosen }) => ({
+      return data.map(({ Dosen_MataKuliah, password, ...Dosen }) => ({
         ...Dosen,
         MataKuliah: Dosen_MataKuliah.map(({ MataKuliah }) => ({
           ...MataKuliah,
@@ -39,15 +39,11 @@ export default class DosenServices {
         },
       },
     };
-    const data = conf.id
-      ? await prisma.dosen.findUnique({
-          where: { id: conf.id },
-          ...include,
-        })
-      : await prisma.dosen.findUnique({
-          where: { username: conf.username },
-          ...include,
-        });
+    const data = await prisma.dosen.findUnique({
+      where: { id: conf.id },
+      ...include,
+    });
+
     if (data) {
       const { Dosen_MataKuliah, password, ...Dosen } = data;
       return {

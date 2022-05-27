@@ -8,7 +8,8 @@ import mataKuliahRoutes from "./routes/mataKuliah.routes";
 import assignmentRoutes from "./routes/assignment.routes";
 import removeRoutes from "./routes/remove.routes";
 import { config } from "dotenv";
-import { cristal } from "gradient-string";
+import { cristal, retro } from "gradient-string";
+import DosenValidator from "./validators/dosen.validators";
 
 config();
 
@@ -35,11 +36,29 @@ process.env.MODE === "dev" &&
   });
 // app.use("/dosen", new DosenValidator().validate);
 
-// Routes
-app.use("/dosen", dosenRoutes);
-app.use("/mahasiswa", mahasiswaRoutes);
-app.use("/mata-kuliah", mataKuliahRoutes);
-app.use("/mata-kuliah", assignmentRoutes);
-app.use("/mata-kuliah", removeRoutes);
+// Validation Guards
+// Dosen Routes Validation
+app
+  .get("/dosen/:id", (req, res, next) => DosenValidator.checkId(req, res, next))
+  .post("/dosen", (req, res, next) => DosenValidator.checkBody(req, res, next))
+  .put("/dosen/:id/", (req, res, next) =>
+    DosenValidator.checkId(req, res, next)
+  )
+  .put("/dosen/:id", (req, res, next) =>
+    DosenValidator.checkUpdatePayload(req, res, next)
+  )
+  .delete("/dosen/:id", (req, res, next) =>
+    DosenValidator.checkId(req, res, next)
+  );
 
-app.listen(port, () => console.log(`Server listening on port:${port}`));
+// Mahasiswa Routes Validations
+
+// Routes
+app
+  .use("/dosen", dosenRoutes)
+  .use("/mahasiswa", mahasiswaRoutes)
+  .use("/mata-kuliah", mataKuliahRoutes)
+  .use("/mata-kuliah", assignmentRoutes)
+  .use("/mata-kuliah", removeRoutes);
+
+app.listen(port, () => console.log(retro(`Server listening on port:${port}`)));

@@ -1,6 +1,3 @@
-import { Prisma } from "@prisma/client";
-import { Response } from "express";
-
 export function handleSync(fn: () => any) {
   try {
     const data = fn();

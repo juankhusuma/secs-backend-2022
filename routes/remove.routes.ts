@@ -1,6 +1,7 @@
 import express from "express";
 import MataKuliahServices from "../services/mataKuliah.services";
 import { handle } from "../lib/error";
+import send from "../lib/send";
 const routes = express
   .Router()
   .put("/:id/remove/mahasiswa", async (req, res) => {
@@ -10,15 +11,7 @@ const routes = express
         mahasiswaId: req.body.id,
       })
     );
-    if (error) {
-      return res.status(500).json({
-        error: {
-          message: error.message,
-          stack: error.stack,
-        },
-      });
-    }
-    return res.json(data);
+    return send(res, data, error);
   })
   .put("/:id/remove/dosen", async (req, res) => {
     const [data, error] = await handle(() =>
@@ -27,14 +20,6 @@ const routes = express
         dosenId: req.body.id,
       })
     );
-    if (error) {
-      return res.status(500).json({
-        error: {
-          message: error.message,
-          stack: error.stack,
-        },
-      });
-    }
-    return res.json(data);
+    return send(res, data, error);
   });
 export default routes;
