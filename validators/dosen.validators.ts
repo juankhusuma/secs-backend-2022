@@ -54,7 +54,7 @@ export default class DosenValidator {
         throw new Error(
           "Invalid ID in the route parameter, (ID must be a number)"
         );
-      if (parseInt(id) > total) throw new Error("This user does not exist");
+      if (parseInt(id) > total) throw new Error("This Dosen does not exist");
       return next();
     } catch (error: any) {
       return res.status(500).json({

@@ -11,6 +11,7 @@ import { config } from "dotenv";
 import { cristal, retro } from "gradient-string";
 import DosenValidator from "./validators/dosen.validators";
 import MahasiswaValidator from "./validators/mahasiswa.validators";
+import MataKuliahValidator from "./validators/mataKuliah.validators";
 
 config();
 
@@ -68,6 +69,30 @@ app
   )
   .delete("/mahasiswa/:id", (req, res, next) =>
     MahasiswaValidator.checkId(req, res, next)
+  );
+
+// Mata Kuliah Routes Validations
+app
+  .get("/mata-kuliah/:id", (req, res, next) =>
+    MataKuliahValidator.checkId(req, res, next)
+  )
+  .post("/mata-kuliah", (req, res, next) =>
+    MataKuliahValidator.checkBody(req, res, next)
+  )
+  .put("/mata-kuliah/:id", (req, res, next) =>
+    MataKuliahValidator.checkId(req, res, next)
+  )
+  .put("/mata-kuliah/:id", (req, res, next) =>
+    MataKuliahValidator.checkUpdatePayload(req, res, next)
+  )
+  .delete("/mata-kuliah/:id", (req, res, next) =>
+    MataKuliahValidator.checkId(req, res, next)
+  )
+  .put("/mata-kuliah/:id/mahasiswa", (req, res, next) =>
+    MataKuliahValidator.checkMahasiswaUpdateId(req, res, next)
+  )
+  .put("/mata-kuliah/:id/dosen", (req, res, next) =>
+    MataKuliahValidator.checkDosenUpdateId(req, res, next)
   );
 
 // Routes

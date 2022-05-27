@@ -13,8 +13,8 @@ export default class MahasiswaValidator {
       if (name.length < 3)
         throw new Error("Name is too short (3+ characters is required)");
       if (!NIM || NIM === "") throw new Error("NIP is required");
-      let user = await prisma.mahasiswa.findUnique({ where: { NIM } });
-      if (user) throw new Error("NIM already in use");
+      let mahasiswa = await prisma.mahasiswa.findUnique({ where: { NIM } });
+      if (mahasiswa) throw new Error("NIM already in use");
       return next();
     } catch (error: any) {
       return res.status(500).json({
@@ -33,7 +33,8 @@ export default class MahasiswaValidator {
         throw new Error(
           "Invalid ID in the route parameter, (ID must be a number)"
         );
-      if (parseInt(id) > total) throw new Error("This user does not exist");
+      if (parseInt(id) > total)
+        throw new Error("This Mahasiswa does not exist");
       return next();
     } catch (error: any) {
       return res.status(500).json({
@@ -58,8 +59,8 @@ export default class MahasiswaValidator {
       } else if (name === "")
         throw new Error("Name could not be set to an empty string");
       if (NIM) {
-        let user = await prisma.mahasiswa.findUnique({ where: { NIM } });
-        if (user) throw new Error("NIP already in use");
+        let mahasiswa = await prisma.mahasiswa.findUnique({ where: { NIM } });
+        if (mahasiswa) throw new Error("NIP already in use");
       } else if (NIM === "") {
         throw new Error("NIP could not be set to an empty string");
       }
