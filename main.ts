@@ -40,66 +40,56 @@ process.env.MODE === "dev" &&
     reqCount++;
     next();
   });
-// app.use("/dosen", new DosenValidator().validate);
+app.use(passport.authenticate("jwt", { session: false }));
 
 // Validation Guards
 // Dosen Routes Validation
 app
-  .get("/dosen/:id", (req, res, next) => DosenValidator.checkId(req, res, next))
-  .post("/dosen", (req, res, next) => DosenValidator.checkBody(req, res, next))
-  .post("/auth/register", (req, res, next) =>
-    DosenValidator.checkBody(req, res, next)
+  .get("/dosen/:id", Guard.both, DosenValidator.checkId)
+  .post("/dosen", Guard.both, DosenValidator.checkBody)
+  .post("/auth/register", DosenValidator.checkBody)
+  .put(
+    "/dosen/:id/",
+    Guard.admin,
+    DosenValidator.checkId,
+    DosenValidator.checkUpdatePayload
   )
-  .put("/dosen/:id/", (req, res, next) =>
-    DosenValidator.checkId(req, res, next)
-  )
-  .put("/dosen/:id", (req, res, next) =>
-    DosenValidator.checkUpdatePayload(req, res, next)
-  )
-  .delete("/dosen/:id", (req, res, next) =>
-    DosenValidator.checkId(req, res, next)
-  );
+  .delete("/dosen/:id", Guard.admin, DosenValidator.checkId);
 
 // Mahasiswa Routes Validations
 app
-  .get("/mahasiswa/:id", (req, res, next) =>
-    MahasiswaValidator.checkId(req, res, next)
+  .get("/mahasiswa", Guard.both)
+  .get("/mahasiswa/:id", Guard.both, MahasiswaValidator.checkId)
+  .post("/mahasiswa", Guard.both, MahasiswaValidator.checkBody)
+  .put(
+    "/mahasiswa/:id",
+    Guard.both,
+    MahasiswaValidator.checkId,
+    MahasiswaValidator.checkUpdatePayload
   )
-  .post("/mahasiswa", (req, res, next) =>
-    MahasiswaValidator.checkBody(req, res, next)
-  )
-  .put("/mahasiswa/:id", (req, res, next) =>
-    MahasiswaValidator.checkId(req, res, next)
-  )
-  .put("/mahasiswa/:id/", (req, res, next) =>
-    MahasiswaValidator.checkUpdatePayload(req, res, next)
-  )
-  .delete("/mahasiswa/:id", (req, res, next) =>
-    MahasiswaValidator.checkId(req, res, next)
-  );
+  .delete("/mahasiswa/:id", Guard.both, MahasiswaValidator.checkId);
 
 // Mata Kuliah Routes Validations
 app
-  .get("/mata-kuliah/:id", (req, res, next) =>
-    MataKuliahValidator.checkId(req, res, next)
+  .get("/mata-kuliah", Guard.both)
+  .get("/mata-kuliah/:id", Guard.both, MataKuliahValidator.checkId)
+  .post("/mata-kuliah", Guard.admin, MataKuliahValidator.checkBody)
+  .put(
+    "/mata-kuliah/:id",
+    Guard.admin,
+    MataKuliahValidator.checkId,
+    MataKuliahValidator.checkUpdatePayload
   )
-  .post("/mata-kuliah", (req, res, next) =>
-    MataKuliahValidator.checkBody(req, res, next)
+  .delete("/mata-kuliah/:id", Guard.admin, MataKuliahValidator.checkId)
+  .put(
+    "/mata-kuliah/:id/mahasiswa",
+    Guard.admin,
+    MataKuliahValidator.checkMahasiswaUpdateId
   )
-  .put("/mata-kuliah/:id", (req, res, next) =>
-    MataKuliahValidator.checkId(req, res, next)
-  )
-  .put("/mata-kuliah/:id", (req, res, next) =>
-    MataKuliahValidator.checkUpdatePayload(req, res, next)
-  )
-  .delete("/mata-kuliah/:id", (req, res, next) =>
-    MataKuliahValidator.checkId(req, res, next)
-  )
-  .put("/mata-kuliah/:id/mahasiswa", (req, res, next) =>
-    MataKuliahValidator.checkMahasiswaUpdateId(req, res, next)
-  )
-  .put("/mata-kuliah/:id/dosen", (req, res, next) =>
-    MataKuliahValidator.checkDosenUpdateId(req, res, next)
+  .put(
+    "/mata-kuliah/:id/dosen",
+    Guard.admin,
+    MataKuliahValidator.checkDosenUpdateId
   );
 
 // Routes
@@ -111,15 +101,10 @@ app
   .use("/mata-kuliah", removeRoutes)
   .use("/auth", authRoutes);
 
-app.get(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  Guard.admin,
-  (req, res) => {
-    res.json({
-      user: req.user,
-    });
-  }
-);
+app.get("/", Guard.dosen, (req, res) => {
+  res.json({
+    user: req.user,
+  });
+});
 
 app.listen(port, () => console.log(retro(`Server listening on port:${port}`)));
