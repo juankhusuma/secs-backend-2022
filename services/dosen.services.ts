@@ -7,8 +7,9 @@ interface IGetConfig extends Prisma.DosenWhereUniqueInput {
 
 export default class DosenServices {
   public static async create(data: Prisma.DosenCreateInput) {
+    const { Role, ...rest } = data;
     return await prisma.dosen.create({
-      data,
+      data: rest,
     });
   }
 

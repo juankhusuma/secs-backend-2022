@@ -13,6 +13,9 @@ import { cristal, retro } from "gradient-string";
 import DosenValidator from "./validators/dosen.validators";
 import MahasiswaValidator from "./validators/mahasiswa.validators";
 import MataKuliahValidator from "./validators/mataKuliah.validators";
+import "./lib/auth";
+import passport from "passport";
+import Guard from "./lib/guards";
 
 config();
 
@@ -107,5 +110,16 @@ app
   .use("/mata-kuliah", assignmentRoutes)
   .use("/mata-kuliah", removeRoutes)
   .use("/auth", authRoutes);
+
+app.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  Guard.admin,
+  (req, res) => {
+    res.json({
+      user: req.user,
+    });
+  }
+);
 
 app.listen(port, () => console.log(retro(`Server listening on port:${port}`)));

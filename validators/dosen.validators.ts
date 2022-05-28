@@ -25,6 +25,9 @@ export default class DosenValidator {
       if (!password || password === "") throw new Error("Password is required");
       if (Role && Role !== "DOSEN" && Role !== "ADMIN")
         throw new Error("Role could only be either DOSEN or ADMIN");
+      else {
+        req.body.Role = "DOSEN";
+      }
       // Checks if the password is secure enough
       if (password.length < 8)
         throw new Error("Password is too short (8+ characters is required)");
