@@ -40,54 +40,113 @@ process.env.MODE === "dev" &&
     reqCount++;
     next();
   });
+
 app.use(passport.authenticate("jwt", { session: false }));
 
 // Validation Guards
 // Dosen Routes Validation
 app
-  .get("/dosen/:id", Guard.both, DosenValidator.checkId)
-  .post("/dosen", Guard.both, DosenValidator.checkBody)
+  .get(
+    "/dosen/:id",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
+    DosenValidator.checkId
+  )
+  .post(
+    "/dosen",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
+    DosenValidator.checkBody
+  )
   .post("/auth/register", DosenValidator.checkBody)
   .put(
     "/dosen/:id/",
+    passport.authenticate("jwt", { session: false }),
     Guard.admin,
     DosenValidator.checkId,
     DosenValidator.checkUpdatePayload
   )
-  .delete("/dosen/:id", Guard.admin, DosenValidator.checkId);
+  .delete(
+    "/dosen/:id",
+    passport.authenticate("jwt", { session: false }),
+    Guard.admin,
+    DosenValidator.checkId
+  );
 
 // Mahasiswa Routes Validations
 app
-  .get("/mahasiswa", Guard.both)
-  .get("/mahasiswa/:id", Guard.both, MahasiswaValidator.checkId)
-  .post("/mahasiswa", Guard.both, MahasiswaValidator.checkBody)
+  .get(
+    "/mahasiswa",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic
+  )
+  .get(
+    "/mahasiswa/:id",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
+    MahasiswaValidator.checkId
+  )
+  .post(
+    "/mahasiswa",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
+    MahasiswaValidator.checkBody
+  )
   .put(
     "/mahasiswa/:id",
-    Guard.both,
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
     MahasiswaValidator.checkId,
     MahasiswaValidator.checkUpdatePayload
   )
-  .delete("/mahasiswa/:id", Guard.both, MahasiswaValidator.checkId);
+  .delete(
+    "/mahasiswa/:id",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
+    MahasiswaValidator.checkId
+  );
 
 // Mata Kuliah Routes Validations
 app
-  .get("/mata-kuliah", Guard.both)
-  .get("/mata-kuliah/:id", Guard.both, MataKuliahValidator.checkId)
-  .post("/mata-kuliah", Guard.admin, MataKuliahValidator.checkBody)
+  .get(
+    "/mata-kuliah",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic
+  )
+  .get(
+    "/mata-kuliah/:id",
+    passport.authenticate("jwt", { session: false }),
+    Guard.basic,
+    MataKuliahValidator.checkId
+  )
+  .post(
+    "/mata-kuliah",
+    passport.authenticate("jwt", { session: false }),
+    Guard.admin,
+    MataKuliahValidator.checkBody
+  )
   .put(
     "/mata-kuliah/:id",
+    passport.authenticate("jwt", { session: false }),
     Guard.admin,
     MataKuliahValidator.checkId,
     MataKuliahValidator.checkUpdatePayload
   )
-  .delete("/mata-kuliah/:id", Guard.admin, MataKuliahValidator.checkId)
+  .delete(
+    "/mata-kuliah/:id",
+    passport.authenticate("jwt", { session: false }),
+    Guard.admin,
+    MataKuliahValidator.checkId
+  )
   .put(
     "/mata-kuliah/:id/mahasiswa",
+    passport.authenticate("jwt", { session: false }),
     Guard.admin,
     MataKuliahValidator.checkMahasiswaUpdateId
   )
   .put(
     "/mata-kuliah/:id/dosen",
+    passport.authenticate("jwt", { session: false }),
     Guard.admin,
     MataKuliahValidator.checkDosenUpdateId
   );
