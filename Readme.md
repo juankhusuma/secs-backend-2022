@@ -12,3 +12,4 @@ Made with:
 
 Author : [@juan.d.khusuma](https://instagram.com/juan.d.khusuma)
 Started: 21 May 2022
+Deployed on [Heroku](https://secs-backend.herokuapp.com/)

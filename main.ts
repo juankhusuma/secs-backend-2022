@@ -160,7 +160,7 @@ app
 app.get(
   "/",
   passport.authenticate("jwt", { session: false }),
-  Guard.dosen,
+  Guard.basic,
   (req, res) => {
     res.json({
       user: req.user,
