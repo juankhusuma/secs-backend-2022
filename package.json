@@ -4,9 +4,11 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "jest",
         "dev": "nodemon --ignore ./prisma/ main.ts",
-        "build": "tsc"
+        "build": "tsc",
+        "migrate": "npx prisma migrate deploy && node ./build/prisma/admin.js",
+        "start": "node ./build/main.js",
+        "postinstall": "npm run build"
     },
     "prisma": {
         "seed": "ts-node ./prisma/seed.ts"
