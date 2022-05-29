@@ -157,10 +157,15 @@ app
   .use("/mata-kuliah", removeRoutes)
   .use("/auth", authRoutes);
 
-app.get("/", passport.authenticate("jwt"), Guard.dosen, (req, res) => {
-  res.json({
-    user: req.user,
-  });
-});
+app.get(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  Guard.dosen,
+  (req, res) => {
+    res.json({
+      user: req.user,
+    });
+  }
+);
 
 app.listen(port, () => console.log(retro(`Server listening on port:${port}`)));
