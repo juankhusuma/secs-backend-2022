@@ -3,4 +3,3 @@ node_modules
 pnpm.lock.yaml
 .dist
 client
-build
