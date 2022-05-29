@@ -157,7 +157,7 @@ app
   .use("/mata-kuliah", removeRoutes)
   .use("/auth", authRoutes);
 
-app.get("/", Guard.dosen, (req, res) => {
+app.get("/", passport.authenticate("jwt"), Guard.dosen, (req, res) => {
   res.json({
     user: req.user,
   });
