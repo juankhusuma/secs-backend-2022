@@ -24,7 +24,7 @@ const port = process.env.PORT || 5500;
 
 // Middlewares
 app.use(morgan("dev"));
-// app.use(helmet());
+app.use(helmet());
 app.use(bp.json());
 
 var reqCount = 0;
@@ -39,8 +39,6 @@ app.use((req, _, next) => {
   reqCount++;
   next();
 });
-
-app.use(passport.authenticate("jwt", { session: false }));
 
 // Validation Guards
 // Dosen Routes Validation
