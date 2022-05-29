@@ -23,23 +23,22 @@ export const app = express();
 const port = process.env.PORT || 5500;
 
 // Middlewares
-process.env.MODE === "dev" && app.use(morgan("dev"));
-
-app.use(helmet());
+app.use(morgan("dev"));
+// app.use(helmet());
 app.use(bp.json());
 
 var reqCount = 0;
-process.env.MODE === "dev" &&
-  app.use((req, _, next) => {
-    console.log(
-      cristal(`
+
+app.use((req, _, next) => {
+  console.log(
+    cristal(`
     Request[${reqCount}] >> ${req.method} ${req.url}
     `)
-    );
-    req.body && console.table(req.body);
-    reqCount++;
-    next();
-  });
+  );
+  req.body && console.table(req.body);
+  reqCount++;
+  next();
+});
 
 app.use(passport.authenticate("jwt", { session: false }));
 
