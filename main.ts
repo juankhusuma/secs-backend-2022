@@ -19,7 +19,7 @@ import Guard from "./lib/guards";
 
 config();
 
-export const app = express();
+const app = express();
 const port = process.env.PORT || 5500;
 
 // Middlewares
