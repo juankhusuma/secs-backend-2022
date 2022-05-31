@@ -20,7 +20,6 @@ export default class Guard {
   }
 
   public static basic(req: Request, res: Response, next: NextFunction) {
-    console.log(req.user, "Basic Guard");
     if (
       (req?.user as any).Role === "ADMIN" ||
       (req?.user as any).Role === "DOSEN"

@@ -52,12 +52,10 @@ export default class DosenValidator {
   public static async checkId(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const total = await prisma.dosen.count();
       if (Number.isNaN(parseInt(id)))
         throw new Error(
           "Invalid ID in the route parameter, (ID must be a number)"
         );
-      if (parseInt(id) > total) throw new Error("This Dosen does not exist");
       return next();
     } catch (error: any) {
       return res.status(500).json({
