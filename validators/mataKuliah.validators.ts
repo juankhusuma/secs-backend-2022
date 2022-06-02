@@ -16,7 +16,15 @@ export default class MataKuliahValidator {
       user = await prisma.mataKuliah.findUnique({ where: { code } });
       if (user) throw new Error("Code already in use");
       if (!jadwal || jadwal === []) throw new Error("Jadwal is required");
-      const days = ["SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+      const days = [
+        "SENIN",
+        "SELASA",
+        "RABU",
+        "KAMIS",
+        "JUMAT",
+        "SABTU",
+        "MINGGU",
+      ];
       for (let i = 0; i < jadwal.length; i++) {
         if (!days.includes(jadwal[i].toUpperCase()))
           throw new Error("Invalid day in jadwal. Must be one of: " + days);
@@ -71,7 +79,15 @@ export default class MataKuliahValidator {
       if (jadwal) {
         if (jadwal === [])
           throw new Error("Jadwal could not be set to an empty array");
-        const days = ["SENIN", "SELASA", "RABU", "KAMIS", "JUMAT", "SABTU"];
+        const days = [
+          "SENIN",
+          "SELASA",
+          "RABU",
+          "KAMIS",
+          "JUMAT",
+          "SABTU",
+          "MINGGU",
+        ];
         for (let i = 0; i < jadwal.length; i++) {
           if (!days.includes(jadwal[i].toUpperCase()))
             throw new Error("Invalid day in jadwal. Must be one of: " + days);
