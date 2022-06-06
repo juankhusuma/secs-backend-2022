@@ -1,7 +1,5 @@
 import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import DosenServices from "../services/dosen.services";
-import { handle } from "./error";
 import { config } from "dotenv";
 config();
 

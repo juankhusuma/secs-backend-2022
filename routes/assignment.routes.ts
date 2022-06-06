@@ -2,6 +2,7 @@ import express from "express";
 import MataKuliahServices from "../services/mataKuliah.services";
 import { handle } from "../lib/error";
 import send from "../lib/send";
+
 const routes = express
   .Router()
   .put("/:id/assign/mahasiswa", async (req, res) => {

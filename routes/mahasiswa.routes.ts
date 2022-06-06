@@ -3,6 +3,7 @@ import { handle } from "../lib/error";
 import MahasiswaServices from "../services/mahasiswa.services";
 import { Mahasiswa } from "@prisma/client";
 import send from "../lib/send";
+
 const routes = express
   .Router()
   .get("/", async (_, res) => {
