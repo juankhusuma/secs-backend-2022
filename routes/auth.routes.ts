@@ -34,16 +34,10 @@ const routes = express
           process.env.JWT_SECRET as string,
           { expiresIn: "7d" }
         );
-        return res
-          .status(200)
-          .cookie("token", token, {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 7,
-          })
-          .json({
-            user: rest,
-            token,
-          });
+        return res.status(200).json({
+          user: rest,
+          token,
+        });
       }
       return send(res, null, {
         name: "Auth Error: Invalid Password",
